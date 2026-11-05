@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- URL fragment holds the pairing secret: read only here, never sent anywhere -->
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<title>Telefonu TV ile eşle – Hustle Browser</title>
+<style>
+  :root {
+    --bg: #15181c;
+    --surface: #1f2328;
+    --ink: #e8ecf1;
+    --ink-faint: #9aa5b1;
+    --accent: #FF6B00;
+    --on-accent: #ffffff;
+    --line: #333a42;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --ink: #1f2933;
+      --ink-faint: #5f6b7a;
+      --accent: #E53935;
+      --on-accent: #ffffff;
+      --line: #dde3ea;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+  }
+  h1 { font-size: 22px; margin: 16px 0 8px; }
+  p { margin: 8px 0; }
+  .faint { color: var(--ink-faint); font-size: 14px; }
+  .button {
+    display: block;
+    margin: 24px 0 8px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+  }
+  .stores { margin: 8px 0 0; padding: 0; list-style: none; }
+  .stores li { padding: 10px 0; border-top: 1px solid var(--line); }
+  .stores a { color: var(--accent); text-decoration: none; }
+  [hidden] { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <svg class="logo" viewBox="0 0 24 24" aria-hidden="true" width="56" height="56">
+    <path fill="currentColor" d="M21,3H3c-1.1,0 -2,0.9 -2,2v12c0,1.1 0.9,2 2,2h5v2h8v-2h5c1.1,0 1.99,-0.9 1.99,-2L23,5c0,-1.1 -0.9,-2 -2,-2zM21,17H3V5h18v12z"/>
+  </svg>
+
+  <!-- a link from a QR code -->
+  <section id="pair" hidden>
+    <h1>Bu telefonu TV ile eşle</h1>
+    <p id="tvNameLine">Bu link bu telefonu Hustle Browser yüklü TV ile eşler. Sonra telefondan TV'ye sekme ve yer imlerini gönderebilirsiniz.</p>
+    <a class="button" id="open" href="#">Hustle Browser'da Aç</a>
+    <p class="faint">Telefon, TV ile aynı ağda olmalı ve QR kod TV ekranında hâlâ görünüyor olmalı.</p>
+    <p class="faint">Hiçbir şey olmazsa: Hustle Browser'ı bu telefona kurun, sonra TV'deki kodu tekrar tarayın:</p>
+  </section>
+
+  <!-- no link: the page was opened by itself -->
+  <section id="howto" hidden>
+    <h1>Telefonu Hustle Browser ile eşle</h1>
+    <p>TV'de Hustle Browser'ı açın, çubuğundaki telefon düğmesini seçin ve gösterdiği QR kodu telefonunuzun kamerası ile tarayın.</p>
+    <p class="faint">Hustle Browser'ın telefonda da yüklü olması gerekir:</p>
+  </section>
+
+  <ul class="stores">
+    <li><a href="https://github.com/justemir84/hustle-browser/releases">GitHub Releases'ten indirin</a></li>
+  </ul>
+</main>
+<script>
+  (function () {
+    var fragment = location.hash;
+    var params = {};
+    fragment.replace(/^#/, "").split("&").forEach(function (part) {
+      var at = part.indexOf("=");
+      if (at <= 0) return;
+      try {
+        params[part.substring(0, at)] = decodeURIComponent(part.substring(at + 1).replace(/\+/g, " "));
+      } catch (e) {
+      }
+    });
+    var isPairing = params.v && params.k && params.p && params.a;
+    document.getElementById(isPairing ? "pair" : "howto").hidden = false;
+    if (!isPairing) return;
+    if (params.n) {
+      var p = document.getElementById("tvNameLine");
+      p.textContent = "Bu link bu telefonu \"" + params.n + "\" adlı TV ile eşler. Sonra telefondan TV'ye sekme ve yer imlerini gönderebilirsiniz.";
+    }
+    // the app opens hustlebrowser://sync links too; the fragment stays on the phone
+    document.getElementById("open").href = "hustlebrowser://sync" + fragment;
+  })();
+</script>
+</body>
+</html>

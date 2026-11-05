@@ -1,0 +1,22 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.phlox.tvwebbrowser",
+      "sha256_cert_fingerprints": [
+        "9E:8A:D0:89:83:25:F8:FA:D8:90:DC:69:A7:F5:45:2C:34:AD:BB:98:57:5C:B5:A7:69:EF:7C:03:79:FD:5D:01"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.phlox.tvwebbrowser.gecko",
+      "sha256_cert_fingerprints": [
+        "9E:8A:D0:89:83:25:F8:FA:D8:90:DC:69:A7:F5:45:2C:34:AD:BB:98:57:5C:B5:A7:69:EF:7C:03:79:FD:5D:01"
+      ]
+    }
+  }
+]
